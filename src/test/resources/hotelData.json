@@ -1,0 +1,10 @@
+[
+  {
+    "city" : "Mumbai",
+    "checkIn" : "25-02-2022",
+    "checkOut" : "27-02-2022",
+    "adultCount" : 2,
+    "children" : [7],
+    "travellingFor" : "Work"
+  }
+]

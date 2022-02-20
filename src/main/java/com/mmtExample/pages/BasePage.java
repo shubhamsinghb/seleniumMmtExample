@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.regex.Pattern;
 
 public class BasePage {
 
@@ -44,5 +45,9 @@ public class BasePage {
         javascriptExecutor.executeScript("return document.readyState").equals("completed");
     }
 
+    protected void waitForMatchText(String city, By by){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20), Duration.ofMillis(250));
+        wait.until(ExpectedConditions.textMatches(by, Pattern.compile("^"+city)));
+    }
 
 }

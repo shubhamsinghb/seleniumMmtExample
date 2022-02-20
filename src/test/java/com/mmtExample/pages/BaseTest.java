@@ -1,7 +1,9 @@
 package com.mmtExample.pages;
 
 import com.mmtExample.driverManager.DriverFactory;
+import com.mmtExample.file.manager.DirectoryManager;
 import com.mmtExample.file.readers.PropertyReader;
+import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -11,8 +13,11 @@ public class BaseTest {
 
     @BeforeSuite
     public void setup(){
+        DirectoryManager.clearDirectory("allure-results","allure-reports","output");
+        PropertyConfigurator.configure("src/main/resources/log4j.properties");
         PropertyReader reader = new PropertyReader();
         reader.read();
+
     }
 
     @BeforeMethod
