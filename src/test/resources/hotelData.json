@@ -1,8 +1,8 @@
 [
   {
     "city" : "Mumbai",
-    "checkIn" : "25-02-2022",
-    "checkOut" : "27-02-2022",
+    "checkIn" : "15-04-2022",
+    "checkOut" : "20-04-2022",
     "adultCount" : 2,
     "children" : [7],
     "travellingFor" : "Work"

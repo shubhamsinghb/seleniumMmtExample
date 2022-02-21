@@ -6,6 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -14,7 +15,6 @@ import java.util.regex.Pattern;
 public class BasePage {
 
     WebDriver driver;
-
     protected BasePage(){
         this.driver = DriverFactory.getBrowserInstance();
     }
@@ -23,6 +23,12 @@ public class BasePage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20), Duration.ofMillis(250));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
+
+    public void clicklWithoutWait(By by){
+        driver.findElement(by).click();
+
+    }
+
 
     protected void getUrl(String url){
         driver.get(url);
@@ -48,6 +54,11 @@ public class BasePage {
     protected void waitForMatchText(String city, By by){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20), Duration.ofMillis(250));
         wait.until(ExpectedConditions.textMatches(by, Pattern.compile("^"+city)));
+    }
+
+    protected void selectByVisibleText(By by, String text){
+        Select select = new Select(findElement(by));
+        select.selectByVisibleText(text);
     }
 
 }
