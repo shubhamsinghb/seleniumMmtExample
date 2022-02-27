@@ -6,3 +6,4 @@
 - [Running tests](docs/RunningTests/runningTests.md)
 - [Implementation Approach](docs/ImplementationApproachAddingNewTest/implementationApproach.md)
 - [Adding tests](docs/ImplementationApproachAddingNewTest/addingNewTests.md)
+- [Results](docs/ResultLinks/results.md)
