@@ -6,6 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mmtExample.bo.HotelBookingBO;
 import com.mmtExample.bo.HotelBookingFilterBO;
+import org.apache.commons.logging.Log;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,9 +20,10 @@ public class HotelBookingFilterAggregator extends HotelBookingAbstractDataAggreg
 
     String filePath="src/test/resources/HotelBookingFilter.json";
     private static List<HotelBookingFilterBO> hotelBookingFilterBOList = new ArrayList<>();
-
+    public static Logger logger = LogManager.getLogger(HotelBookingFilterAggregator.class);
     @Override
     public void read() {
+        logger.info("Reading user data from json file to create HotelBookingFilterBO");
         FileReader reader=null;
         try{
             reader  = new FileReader(new File(filePath));

@@ -21,9 +21,6 @@ public class DriverFactory {
             case("firefox"):
                 driver = new FirefoxManager().getDriver();
                 break;
-            case("safari"):
-                driver = new SafariManager().getDriver();
-                break;
             default:
                 throw new IllegalArgumentException(browser + " is not supported");
         }

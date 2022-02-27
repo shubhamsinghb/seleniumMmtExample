@@ -1,8 +1,8 @@
 package com.mmtExample.pages.hotel.hotelDetails;
 
-import com.mmtExample.file.readers.PropertyReader;
 import com.mmtExample.pages.BasePage;
-import jdk.nashorn.internal.runtime.ListAdapter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -10,17 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotelDetailsPage extends BasePage implements IHotelDetailsPage {
-
+    public static Logger logger = LogManager.getLogger(HotelDetailsPage.class);
 
     @Override
     public String switchToHotelDetailTab() {
         return switchToNewOpenedTab();
     }
 
+    /*Selecting the room from dropdown.
+    @param roomTexts which is the occupants in room
+    */
     @Override
     public List<String> selectFromDropDownRoom(String roomType, List<String> roomTexts) {
+
         List<String> roomCost =  new ArrayList<>();
         for(String roomText : roomTexts){
+            logger.info("Selecting room  "+roomText+" for occupants ::: " + roomText);
             By elementForRoomOccupantSelection = By.xpath("(//h2[@class='rmType__roomName'] " +
                     "[text()='"+roomType+"']//..//..//..//div[@class='slctRmDropdown__input'])[3]");
             scrollElementToView(elementForRoomOccupantSelection);

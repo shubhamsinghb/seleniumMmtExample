@@ -2,6 +2,8 @@ package com.mmtExample.pages.hotel.hotelListing;
 
 import org.openqa.selenium.By;
 
+import java.util.List;
+
 public interface IHotelListingPage {
 
     By BUDGET_BUTTON = By.xpath("//div[@class='range']//button");
@@ -13,6 +15,6 @@ public interface IHotelListingPage {
     void enterMaximumBudget(String maxAmount);
     void clickOnBudgetButton();
     void selectRatingCheckbox(String ratingToSelect);
-    void selectHotel(String hotel);
+    void selectHotel(String hotel, String checkinDate, String checkoutDate,int adults , List<Integer> ch);
 
 }

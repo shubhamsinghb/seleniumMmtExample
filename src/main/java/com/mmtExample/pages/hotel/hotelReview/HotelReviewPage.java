@@ -1,17 +1,16 @@
 package com.mmtExample.pages.hotel.hotelReview;
 
-import com.github.javafaker.Faker;
+
 import com.mmtExample.bo.TravellerBO;
 import com.mmtExample.pages.BasePage;
-import com.mmtExample.pages.hotel.hotelDetails.IHotelDetailsPage;
-import org.openqa.selenium.By;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
-
-import javax.xml.bind.Element;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelReviewPage extends BasePage implements IHotelReviewPage {
+    public static Logger logger = LogManager.getLogger(HotelReviewPage.class);
 
 
     @Override
@@ -19,8 +18,10 @@ public class HotelReviewPage extends BasePage implements IHotelReviewPage {
         return getText(HOTEL_NAME);
     }
 
+    //Filling customer data. Will be filled using faker object
     @Override
     public void fillCustomerDetails(TravellerBO travellerBO){
+        logger.info("Filling customer details");
         inputText(FIRST_NAME, travellerBO.getFirstName());
         inputText(LAST_NAME, travellerBO.getLastName());
         inputText(EMAIL, travellerBO.getEmail());
@@ -51,6 +52,7 @@ public class HotelReviewPage extends BasePage implements IHotelReviewPage {
         return getText(TARIFF_AMOUNT);
     }
 
+
     @Override
     public List<String> getRoomDetails() {
         List<WebElement> element = getWebElements(ROOM_DETAILS);
@@ -62,6 +64,8 @@ public class HotelReviewPage extends BasePage implements IHotelReviewPage {
     }
 
     public void clickOnPayNow(){
-        click(PAY_NOW);
+        scrollElementToView(PAY_NOW);
+        clickOnElementUsingJavaScriptExecutor(PAY_NOW);
+
     }
 }

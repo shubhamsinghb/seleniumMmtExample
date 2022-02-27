@@ -3,6 +3,7 @@ package com.mmtExample.utils;
 public class GSTHelper {
 
 
+    //This is ahelper method to calculate gst on the basis of govt rules
     public static int calculateGst(int totalRoomTeriff){
         int gstValue= 0;
         if(totalRoomTeriff<1000 && totalRoomTeriff<=7500 ){

@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestContext;
 
 import java.time.Duration;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 public class BasePage {
 
     WebDriver driver;
+
     protected BasePage(){
         this.driver = DriverFactory.getBrowserInstance();
     }
@@ -26,6 +28,10 @@ public class BasePage {
     private WebElement findElement(By by){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50), Duration.ofMillis(250));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
+    public void setiTestContext(ITestContext iTestContext){
+        iTestContext.setAttribute("driver",driver);
     }
 
     public WebElement getElement(By by){

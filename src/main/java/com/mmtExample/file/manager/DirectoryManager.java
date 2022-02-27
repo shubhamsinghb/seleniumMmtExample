@@ -9,7 +9,7 @@ public class DirectoryManager {
     private static final Logger logger= LogManager.getLogger(DirectoryManager.class);
 
     public static void clearDirectory(String... directoryNames){
-        logger.warn("Deleting directory before the run");
+        logger.info("Deleting directory before the run");
         for (String directory : directoryNames){
             File file = new File(directory);
             removeFiles(file);

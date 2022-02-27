@@ -17,57 +17,37 @@ import com.mmtExample.utils.DateUtils;
 import com.mmtExample.utils.GSTHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.testng.ITestContext;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class HomePageTest extends BaseTest {
-    private static final Logger logger = LogManager.getLogger(HomePageTest.class);
+public class E2EHotelBookingTest extends BaseTest {
+    private static final Logger logger = LogManager.getLogger(E2EHotelBookingTest.class);
 
 
     @Test(dataProvider = "hotelBookingData" , dataProviderClass = HotelBookingDataProvider.class)
-    public void firstTest(HotelBookingBO hotelBookingBO , HotelBookingFilterBO hotelBookingFilterBO) throws InterruptedException, ParseException {
-        logger.info("start trest for mmt");
+    public void e2eHotelBookingTest(HotelBookingBO hotelBookingBO , HotelBookingFilterBO hotelBookingFilterBO, ITestContext iTestContext) throws InterruptedException, ParseException {
+        logger.info("Starting test for booking hotel");
         logger.debug("");
         SoftAssert sft = new SoftAssert();
         HomePage homePage = new HomePage();
-        homePage.launch(PropertyReader.getProperty("baseUrl"));
-        homePage.clickOnLogin();
-        homePage.selectMenu(MmtMainMenu.HOTEL);
+        homePage.setingItestContext(iTestContext);
+        homePageOperations(homePage);
         HotelBookingPage hotelBookingPage = new HotelBookingPage();
-        hotelBookingPage.selectCity(hotelBookingBO.getCity());
-        hotelBookingPage.selectCheckinDate(hotelBookingBO.getCheckIn());
-        hotelBookingPage.selectCheckOutDate(hotelBookingBO.getCheckOut());
-        hotelBookingPage.selectGuests(hotelBookingBO.getAdultCount(),hotelBookingBO.getChildren());
-        hotelBookingPage.selectTravellingFor(hotelBookingBO.getTravellingFor());
+        enterHotelBookingDetails(hotelBookingPage,hotelBookingBO);
         hotelBookingPage.clickOnSearchHotel();
         HotelListingPage hotelListingPage = new HotelListingPage();
-        hotelListingPage.enterMinimumBudget(hotelBookingFilterBO.getMinAmount());
-        hotelListingPage.enterMaximumBudget(hotelBookingFilterBO.getMaxAmount());
-        hotelListingPage.clickOnBudgetButton();
-        hotelListingPage.selectRatingCheckbox(hotelBookingFilterBO.getRating());
-
-        sft.assertTrue(hotelBookingPage.getCurrentCitySelected().contains(hotelBookingBO.getCity()));
-        sft.assertTrue(hotelBookingPage.getCurrentCitySelected().contains(hotelBookingBO.getCity()));
-        sft.assertEquals(hotelBookingPage.getCurrentCheckinDate(), DateUtils.changeDateFormat(hotelBookingBO.getCheckIn(),"dd-MM-yyyy" ,  "EEE, dd MMM yyyy"));
-        sft.assertEquals(hotelBookingPage.getCurrentCheckoutDate(), DateUtils.changeDateFormat(hotelBookingBO.getCheckOut(),"dd-MM-yyyy" ,  "EEE, dd MMM yyyy"));
-        sft.assertEquals(hotelBookingPage.getGuestDetails(), hotelBookingPage.expectedGuestDetails(hotelBookingBO.getRoom(),
-                hotelBookingBO.getAdultCount(),hotelBookingBO.getChildren().size()));
-        hotelListingPage.selectHotel(hotelBookingFilterBO.getHotelToBook());
+        assertBookingDetails(hotelBookingPage,hotelBookingBO,sft);
+        enterFilterDetails(hotelListingPage, hotelBookingFilterBO);
+        hotelListingPage.selectHotel(hotelBookingFilterBO.getHotelToBook(),hotelBookingBO.getCheckIn(), hotelBookingBO.getCheckOut(),hotelBookingBO.getAdultCount() , hotelBookingBO.getChildren());
         HotelDetailsPage hotelDetailsPage = new HotelDetailsPage();
         hotelDetailsPage.switchToHotelDetailTab();
         List<String> roomCost = hotelDetailsPage.selectFromDropDownRoom(hotelBookingFilterBO.getRoomType(),hotelBookingFilterBO.getRoomOccupants());
         List<String> hotelDetailsFromSelectionInfo = hotelDetailsPage.getRoomDetailsFromInfoAfterSelection();
-        sft.assertEquals(hotelBookingFilterBO.getRoomType(), hotelDetailsFromSelectionInfo.get(0));
-        sft.assertEquals(hotelBookingFilterBO.getRoomOccupants().get(0), hotelDetailsFromSelectionInfo.get(1));
-        sft.assertEquals(roomCost.get(0)+"Per Night", hotelDetailsFromSelectionInfo.get(2).replaceAll(",",""));
-        sft.assertEquals(hotelBookingFilterBO.getRoomType(), hotelDetailsFromSelectionInfo.get(3));
-        sft.assertEquals(hotelBookingFilterBO.getRoomOccupants().get(1), hotelDetailsFromSelectionInfo.get(4));
-        sft.assertEquals(roomCost.get(1)+"Per Night", hotelDetailsFromSelectionInfo.get(5).replaceAll(",",""));
+        hotelSelectionInfoAssert(hotelBookingFilterBO,hotelDetailsFromSelectionInfo,sft,roomCost);
         hotelDetailsPage.calculateTotalRoomPrice(roomCost);
         List<String> selectionInfoCenterData = hotelDetailsPage.getSelectInfoCenterText();
         String totalOccupants = hotelBookingBO.getAdultCount() + " Adults & " + hotelBookingBO.getChildren().size()+ " Child";
@@ -78,9 +58,39 @@ public class HomePageTest extends BaseTest {
         HotelReviewPage hotelReviewPage = new HotelReviewPage();
         TravellerBO travellerBO = createFakeTravellerData();
         hotelReviewPage.fillCustomerDetails(travellerBO);
-
         sft.assertEquals(hotelBookingFilterBO.getHotelToBook(), hotelReviewPage.getHotelName());
+        hotelReviewPageAssert(hotelReviewPage, hotelBookingBO,hotelBookingFilterBO,sft,totalRoomTariff);
+        hotelReviewPage.clickOnPayNow();
+        CheckoutPage checkoutPage = new CheckoutPage();
+        assertCheckout(checkoutPage, sft, hotelBookingFilterBO, hotelBookingBO, travellerBO,totalRoomTariff);
+        sft.assertAll();
+    }
 
+    @Test(dataProvider = "hotelBookingData" , dataProviderClass = HotelBookingDataProvider.class)
+    public void bookingTestFailedToCheckScreenShot(HotelBookingBO hotelBookingBO , HotelBookingFilterBO hotelBookingFilterBO, ITestContext iTestContext) throws InterruptedException, ParseException {
+        logger.info("Starting test for booking hotel");
+        logger.debug("");
+        SoftAssert sft = new SoftAssert();
+        HomePage homePage = new HomePage();
+        homePage.setingItestContext(iTestContext);
+        homePageOperations(homePage);
+        HotelBookingPage hotelBookingPage = new HotelBookingPage();
+        enterHotelBookingDetails(hotelBookingPage,hotelBookingBO);
+        hotelBookingPage.clickOnSearchHotel();
+        HotelListingPage hotelListingPage = new HotelListingPage();
+        hotelBookingBO.setCity("random city for fail");
+        assertBookingDetails(hotelBookingPage,hotelBookingBO,sft);
+    }
+
+    public void homePageOperations(HomePage homePage){
+        homePage.launch(PropertyReader.getProperty("baseUrl"));
+        homePage.clickOnLogin();
+        homePage.selectMenu(MmtMainMenu.HOTEL);
+    }
+
+    public void hotelReviewPageAssert(HotelReviewPage hotelReviewPage, HotelBookingBO hotelBookingBO
+            , HotelBookingFilterBO hotelBookingFilterBO, SoftAssert sft, int totalRoomTariff) throws ParseException {
+        logger.info("Asserting review page data");
         sft.assertEquals(hotelReviewPage.getCheckinDate(),DateUtils.changeDateFormat(hotelBookingBO.getCheckIn(),"dd-MM-yyyy" ,  "dd MMM yyyy"));
         sft.assertEquals(hotelReviewPage.getCheckOutDate(),DateUtils.changeDateFormat(hotelBookingBO.getCheckOut(),"dd-MM-yyyy" ,  "dd MMM yyyy"));
         sft.assertEquals(hotelReviewPage.getTariffAmount().replaceAll(",","") , "₹ " +totalRoomTariff);
@@ -89,10 +99,41 @@ public class HomePageTest extends BaseTest {
         List<String> roomDetails = hotelReviewPage.getRoomDetails();
         sft.assertEquals(roomDetails.get(0), hotelBookingFilterBO.getRoomType().toUpperCase());
         sft.assertEquals(roomDetails.get(2), hotelBookingFilterBO.getRoomType().toUpperCase());
-        hotelReviewPage.clickOnPayNow();
-        CheckoutPage checkoutPage = new CheckoutPage();
-        assertCheckout(checkoutPage, sft, hotelBookingFilterBO, hotelBookingBO, travellerBO,totalRoomTariff);
-        sft.assertAll();
+    }
+    public void hotelSelectionInfoAssert(HotelBookingFilterBO hotelBookingFilterBO, List<String> hotelDetailsFromSelectionInfo, SoftAssert sft,List<String> roomCost ){
+        logger.info("Asserting selection infor on review page");
+        sft.assertEquals(hotelBookingFilterBO.getRoomType(), hotelDetailsFromSelectionInfo.get(0));
+        sft.assertEquals(hotelBookingFilterBO.getRoomOccupants().get(0), hotelDetailsFromSelectionInfo.get(1));
+        sft.assertEquals(roomCost.get(0)+"Per Night", hotelDetailsFromSelectionInfo.get(2).replaceAll(",",""));
+        sft.assertEquals(hotelBookingFilterBO.getRoomType(), hotelDetailsFromSelectionInfo.get(3));
+        sft.assertEquals(hotelBookingFilterBO.getRoomOccupants().get(1), hotelDetailsFromSelectionInfo.get(4));
+        sft.assertEquals(roomCost.get(1)+"Per Night", hotelDetailsFromSelectionInfo.get(5).replaceAll(",",""));
+    }
+
+    public void assertBookingDetails(HotelBookingPage hotelBookingPage, HotelBookingBO hotelBookingBO , SoftAssert sft) throws ParseException {
+        logger.info("Asserting booking dat entered");
+        sft.assertTrue(hotelBookingPage.getCurrentCitySelected().contains(hotelBookingBO.getCity()));
+        sft.assertTrue(hotelBookingPage.getCurrentCitySelected().contains(hotelBookingBO.getCity()));
+        sft.assertEquals(hotelBookingPage.getCurrentCheckinDate(), DateUtils.changeDateFormat(hotelBookingBO.getCheckIn(),"dd-MM-yyyy" ,  "EEE, dd MMM yyyy"));
+        sft.assertEquals(hotelBookingPage.getCurrentCheckoutDate(), DateUtils.changeDateFormat(hotelBookingBO.getCheckOut(),"dd-MM-yyyy" ,  "EEE, dd MMM yyyy"));
+        sft.assertEquals(hotelBookingPage.getGuestDetails(), hotelBookingPage.expectedGuestDetails(hotelBookingBO.getRoom(),
+                hotelBookingBO.getAdultCount(),hotelBookingBO.getChildren().size()));
+
+    }
+
+    public void enterFilterDetails(HotelListingPage hotelListingPage , HotelBookingFilterBO hotelBookingFilterBO){
+        hotelListingPage.enterMinimumBudget(hotelBookingFilterBO.getMinAmount());
+        hotelListingPage.enterMaximumBudget(hotelBookingFilterBO.getMaxAmount());
+        hotelListingPage.clickOnBudgetButton();
+        hotelListingPage.selectRatingCheckbox(hotelBookingFilterBO.getRating());
+    }
+
+    public void enterHotelBookingDetails(HotelBookingPage hotelBookingPage , HotelBookingBO hotelBookingBO){
+        hotelBookingPage.selectCity(hotelBookingBO.getCity());
+        hotelBookingPage.selectCheckinDate(hotelBookingBO.getCheckIn());
+        hotelBookingPage.selectCheckOutDate(hotelBookingBO.getCheckOut());
+        hotelBookingPage.selectGuests(hotelBookingBO.getAdultCount(),hotelBookingBO.getChildren());
+        hotelBookingPage.selectTravellingFor(hotelBookingBO.getTravellingFor());
     }
 
 
@@ -108,7 +149,6 @@ public class HomePageTest extends BaseTest {
         sft.assertEquals(checkoutPage.getLastName(),travellerBO.getLastName());
         String[] email_phone = checkoutPage.getEmailPhone().split("\\|");
         sft.assertEquals(email_phone[0].trim(), travellerBO.getEmail());
-        sft.assertEquals(email_phone[1].trim(), "+91-"+travellerBO.getMobileNumber());
         int calculateGst = GSTHelper.calculateGst(totalRoomTariff);
         sft.assertEquals(checkoutPage.getTariff().replaceAll(",",""), String.valueOf(totalRoomTariff+10));
         sft.assertEquals(checkoutPage.getGst().replaceAll(",",""), String.valueOf(calculateGst));

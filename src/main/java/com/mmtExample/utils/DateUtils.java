@@ -7,6 +7,7 @@ import java.util.Locale;
 
 public class DateUtils {
 
+    //This is a helper method to convert user input date formats to different formats
     public static String changeDateFormat(String travelDate, String currentFormat, String newFormat) throws ParseException {
         SimpleDateFormat formatDate=new SimpleDateFormat(currentFormat);
         Date date=formatDate.parse(travelDate);

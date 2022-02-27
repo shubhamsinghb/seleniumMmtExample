@@ -6,8 +6,7 @@
     </listeners>
     <test name="HotelTests">
         <classes>
-            <class name="com.mmtExample.pages.HomePageTest"/>
-            <class name="com.mmtExample.pages.HomePageTest1"/>
+            <class name="com.mmtExample.pages.E2EHotelBookingTest"/>
         </classes>
     </test>
 </suite>
