@@ -3,6 +3,7 @@ package com.mmtExample.pages;
 import com.mmtExample.driverManager.DriverFactory;
 import com.mmtExample.file.manager.DirectoryManager;
 import com.mmtExample.file.readers.PropertyReader;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
@@ -18,6 +19,8 @@ public class BaseTest {
         PropertyReader reader = new PropertyReader();
         reader.read();
 
+        BasicConfigurator.configure();
+
     }
 
     @BeforeMethod
@@ -25,8 +28,8 @@ public class BaseTest {
         WebDriver driver = DriverFactory.createDriver();
     }
 
-    @AfterMethod
-    public void closeBrowser(){
-        DriverFactory.closeBrowserInstance();
-    }
+//    @AfterMethod
+//    public void closeBrowser(){
+//        DriverFactory.closeBrowserInstance();
+//    }
 }

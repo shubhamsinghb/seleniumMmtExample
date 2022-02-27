@@ -1,17 +1,14 @@
 package com.mmtExample.pages;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.Timer;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Test {
@@ -28,7 +25,7 @@ public class Test {
         driver.findElement(By.xpath("//li[contains(@class,'userLoggedOut')]")).click();
         //driver.findElement(By.xpath("//div[@class='chHeaderContainer']//li[2]")).click();
         driver.findElement(By.xpath("//li[@class='menu_Hotels']")).click();
-        WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(50));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("city"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[contains(@placeholder,'city')]"))).sendKeys("Mumbai");
         wait.until(ExpectedConditions.textMatches(By.xpath("//p[text()='SUGGESTIONS ']//..//..//li[1]"),Pattern.compile("^Mumbai")));
@@ -53,11 +50,29 @@ public class Test {
         driver.findElement(By.xpath("//input[@name=\"min\"]")).sendKeys("1000");
         driver.findElement(By.xpath("//input[@name=\"max\"]")).sendKeys("25000");
         driver.findElement(By.xpath("//div[@class=\"range\"]//button")).click();
+
         //driver.findElement(By.xpath("//span[text()='4 & above (Very Good)']")).click();
 //            JavascriptExecutor js= (JavascriptExecutor) driver;
 //            Boolean b= js.executeScript("return document.readyState").equals("complete");
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='4 & above (Very Good)']"))).click();
-        wait.until(ExpectedConditions.refreshed(ExpectedConditions.stalenessOf(driver.findElement(By.xpath("//div[@class=\"range\"]//button")))));
+        JavascriptExecutor javascriptExecutor= (JavascriptExecutor) driver;
+        boolean b = false;
+        while(!b){
+            System.out.println(b + " before");
+           b = javascriptExecutor.executeScript("return document.readyState").equals("complete");
+            System.out.println(b + " after");
+            System.out.println("running");
+        }
+
+        //wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='4 & above (Very Good)']"))).click();
+//        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id=\"USER_RATING\"]//label)[1]"))).click();
+//        wait.until(ExpectedConditions.refreshed(ExpectedConditions.stalenessOf(driver.findElement(By.xpath("//div[@class=\"range\"]//button")))));
+        WebElement element = driver.findElement(By.xpath("//span[text()='4 & above (Very Good)']"));
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", element);
+        List<WebElement> ele = driver.findElements(By.xpath("//div[@id=\"hotelListingContainer\"]"));
+
+        System.out.println(ele.size());
+        System.out.println(ele.get(0).getText());
 
 
 

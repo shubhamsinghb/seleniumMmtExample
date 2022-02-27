@@ -28,7 +28,6 @@ public class HotelBookingPage extends BasePage implements IHotelBookingPage {
             click(NEXT_MONTH);
         }
         click(By.xpath("(//div[@class='DayPicker-Caption']//div)[1]//..//..//div[text()='"+sf[0]+"']"));
-        waitForPageLoad();
     }
 
     @Override
@@ -75,4 +74,26 @@ public class HotelBookingPage extends BasePage implements IHotelBookingPage {
     }
 
 
+    public  String getCurrentCitySelected(){
+        return getAttributeValue(CITY_INPUT, "value");
+
+    }
+
+    public  String getCurrentCheckinDate(){
+        return getAttributeValue(CHECKIN_INPUT, "value");
+
+    }
+
+    public  String getCurrentCheckoutDate(){
+        return getAttributeValue(CHECKOUT_INPUT, "value");
+
+    }
+
+    public String getGuestDetails(){
+        return getAttributeValue(GUEST_INPUT, "value");
+    }
+
+    public String expectedGuestDetails(int room, int adults, int children){
+        return (room+" Room, "+adults+" Adults, "+children+" Child");
+    }
 }

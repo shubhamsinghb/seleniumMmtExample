@@ -3,6 +3,8 @@ package com.mmtExample.pages.homePage;
 import com.mmtExample.enumConstants.MmtMainMenu;
 import com.mmtExample.pages.BasePage;
 import io.qameta.allure.Step;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

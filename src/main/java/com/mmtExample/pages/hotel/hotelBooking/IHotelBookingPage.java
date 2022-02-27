@@ -8,6 +8,9 @@ import java.util.ListResourceBundle;
 public interface IHotelBookingPage {
 
     By CITY_INPUT = By.id("city");
+    By CHECKIN_INPUT = By.id("checkin");
+    By CHECKOUT_INPUT = By.id("checkout");
+    By GUEST_INPUT = By.id("guest");
     By CITY_TEXT_BOX = By.xpath("//input[contains(@placeholder,'city')]");
     By CITY_LIST = By.xpath("//p[text()='SUGGESTIONS ']//..//..//li[1]");
     By CURRENT_MONTH_YEAR = By.xpath("(//div[@class='DayPicker-Caption']//div)[1]");
@@ -16,6 +19,7 @@ public interface IHotelBookingPage {
     By APPLY_GUEST_CHANGES = By.xpath("//button[text()='APPLY']");
     By TRAVELLING_FOR = By.xpath("//span[text()='Travelling For']");
     By HOTEL_SEARCH = By.xpath("//button[text()='Search']");
+
 
     void selectCity(String city);
     void selectCheckinDate(String checkinDate);

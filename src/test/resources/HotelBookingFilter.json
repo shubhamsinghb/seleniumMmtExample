@@ -1,0 +1,10 @@
+[
+  {
+    "minAmount" : "1000",
+    "maxAmount" : "25000",
+    "rating" : "4 & above (Very Good)",
+    "hotelToBook" : "The Leela Mumbai",
+    "roomType": "Premier City View with Bathtub",
+    "roomOccupants": ["1 Adult & 1 Child" , "1 Adult"]
+  }
+]

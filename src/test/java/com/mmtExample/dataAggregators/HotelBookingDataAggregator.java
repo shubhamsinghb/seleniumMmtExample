@@ -12,10 +12,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelBookingDataAggregator {
+public class HotelBookingDataAggregator extends HotelBookingAbstractDataAggregator {
     String filePath="src/test/resources/hotelData.json";
     private static List<HotelBookingBO> hotelBookingBoList = new ArrayList<>();
 
+    @Override
     public void read() {
         FileReader reader=null;
         try{
@@ -37,6 +38,7 @@ public class HotelBookingDataAggregator {
             hotelBookingBO.setCheckOut(jsonObject.get("checkOut").toString().replace("\"",""));
             hotelBookingBO.setAdultCount(jsonObject.get("adultCount").getAsInt());
             hotelBookingBO.setTravellingFor(jsonObject.get("travellingFor").toString().replace("\"",""));
+            hotelBookingBO.setRoom(jsonObject.get("room").getAsInt());
             JsonArray ch = jsonObject.get("children").getAsJsonArray();
             List<Integer> childrenAge= new ArrayList<>();
             for(JsonElement children : ch){

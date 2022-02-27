@@ -3,9 +3,8 @@ package com.mmtExample.driverManager;
 import com.mmtExample.file.readers.PropertyReader;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.util.List;
+
 
 public class DriverFactory {
     private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
@@ -21,6 +20,9 @@ public class DriverFactory {
                 break;
             case("firefox"):
                 driver = new FirefoxManager().getDriver();
+                break;
+            case("safari"):
+                driver = new SafariManager().getDriver();
                 break;
             default:
                 throw new IllegalArgumentException(browser + " is not supported");
