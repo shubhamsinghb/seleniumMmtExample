@@ -16,6 +16,7 @@ public class HotelBookingBO {
     private int adultCount;
     private List<Integer> children;
     private String travellingFor;
+    private int room;
 
 
 

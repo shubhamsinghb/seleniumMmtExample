@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mmtExample.bo.HotelBookingBO;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,11 +14,14 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelBookingDataAggregator {
+public class HotelBookingDataAggregator extends HotelBookingAbstractDataAggregator {
     String filePath="src/test/resources/hotelData.json";
     private static List<HotelBookingBO> hotelBookingBoList = new ArrayList<>();
+    public static Logger logger = LogManager.getLogger(HotelBookingDataAggregator.class);
 
+    @Override
     public void read() {
+        logger.info("Reading user data from json file to create HotelBookingBO");
         FileReader reader=null;
         try{
             reader  = new FileReader(new File(filePath));
@@ -37,6 +42,7 @@ public class HotelBookingDataAggregator {
             hotelBookingBO.setCheckOut(jsonObject.get("checkOut").toString().replace("\"",""));
             hotelBookingBO.setAdultCount(jsonObject.get("adultCount").getAsInt());
             hotelBookingBO.setTravellingFor(jsonObject.get("travellingFor").toString().replace("\"",""));
+            hotelBookingBO.setRoom(jsonObject.get("room").getAsInt());
             JsonArray ch = jsonObject.get("children").getAsJsonArray();
             List<Integer> childrenAge= new ArrayList<>();
             for(JsonElement children : ch){
