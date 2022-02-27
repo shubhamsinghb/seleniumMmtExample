@@ -28,4 +28,25 @@ public class HotelBookingDataProvider {
         return object;
     }
 
+    @DataProvider
+    public Object[][] hotelBookingDataFailed(){
+        HotelBookingDataAggregator hotelBookingDataAggregator = new HotelBookingDataAggregator();
+        hotelBookingDataAggregator.read();
+        HotelBookingFilterAggregator hotelBookingFilterAggregator = new HotelBookingFilterAggregator();
+        hotelBookingFilterAggregator.read();
+        Object[][] object= new Object[HotelBookingDataAggregator.getHotelBookingBoList().size()][2];
+        int i=0;
+        for (HotelBookingBO hotelBookingBO : HotelBookingDataAggregator.getHotelBookingBoList()){
+            object[i][0]=hotelBookingBO;
+            i++;
+        }
+        i=0;
+        for (HotelBookingFilterBO hotelBookingFilterBO : HotelBookingFilterAggregator.getHotelBookingFilterBOList()){
+            object[i][1]=hotelBookingFilterBO;
+            i++;
+        }
+
+        return object;
+    }
+
 }

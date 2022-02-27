@@ -8,9 +8,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
 
 public class BaseTest {
     public static Logger logger = LogManager.getLogger(BaseTest.class);
@@ -23,13 +21,11 @@ public class BaseTest {
         logger.info("Reading pconfig properties");
         PropertyReader reader = new PropertyReader();
         reader.read();
-
     }
 
     @BeforeMethod
     public void launchBrowser(){
-        logger.info("Starting browser Instance");
-        WebDriver driver = DriverFactory.createDriver();
+        logger.info("Starting browser Instance");DriverFactory.createDriver();
     }
 
     @AfterMethod

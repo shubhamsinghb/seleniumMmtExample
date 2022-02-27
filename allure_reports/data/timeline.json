@@ -1,0 +1,47 @@
+{
+  "uid" : "ab17fc5a4eb3bca4b216b548c7f9fcbc",
+  "name" : "timeline",
+  "children" : [ {
+    "name" : "NB-MAC-QA-SB1",
+    "children" : [ {
+      "name" : "42979@NB-MAC-QA-SB1.main(1)",
+      "children" : [ {
+        "name" : "bookingTestFailedToCheckScreenShot",
+        "uid" : "f037f47b343c68f",
+        "parentUid" : "30e44fb5fe2748747d9031f9967dd84e",
+        "status" : "failed",
+        "time" : {
+          "start" : 1646002444622,
+          "stop" : 1646002450421,
+          "duration" : 5799
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "e2eHotelBookingTest",
+        "uid" : "96086e01c44aa850",
+        "parentUid" : "30e44fb5fe2748747d9031f9967dd84e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1646002415593,
+          "stop" : 1646002440673,
+          "duration" : 25080
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 0,
+        "retriesStatusChange" : false,
+        "parameters" : [ "HotelBookingBO(city=The Leela Mumbai, checkIn=10-04-2022, checkOut=11-04-2022, adultCount=2, children=[2], travellingFor=Work, room=1)", "HotelBookingFilterBO(minAmount=1000, maxAmount=25000, rating=4 & above (Very Good), hotelToBook=The Leela Mumbai, roomType=Premier City View with Bathtub, roomOccupants=[1 Adult & 1 Child, 1 Adult])" ]
+      } ],
+      "uid" : "30e44fb5fe2748747d9031f9967dd84e"
+    } ],
+    "uid" : "be33659c784c5debc5be83f078768e6e"
+  } ]
+}

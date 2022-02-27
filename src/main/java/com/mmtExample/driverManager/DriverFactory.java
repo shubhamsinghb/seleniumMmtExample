@@ -33,6 +33,6 @@ public class DriverFactory {
     }
 
     public static void closeBrowserInstance(){
-        driverThreadLocal.get().close();
+        driverThreadLocal.get().quit();
     }
 }

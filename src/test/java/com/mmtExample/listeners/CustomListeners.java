@@ -27,7 +27,6 @@ public class CustomListeners implements ITestListener {
         WebDriver driver = (WebDriver)context.getAttribute("driver");
         String fileName= "output/images/"+failedMethod  + "_sceenshot_"+System.currentTimeMillis();
         takeScreenShot(driver,fileName );
-        driver.quit();
     }
 
 

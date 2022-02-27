@@ -21,7 +21,7 @@ public class BasePage {
 
     WebDriver driver;
 
-    protected BasePage(){
+    public BasePage(){
         this.driver = DriverFactory.getBrowserInstance();
     }
 

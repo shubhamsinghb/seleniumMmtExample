@@ -1,0 +1,7 @@
+[ {
+  "values" : [ "chrome" ],
+  "name" : "browser"
+}, {
+  "values" : [ "https://www.makemytrip.com/" ],
+  "name" : "baseUrl"
+} ]

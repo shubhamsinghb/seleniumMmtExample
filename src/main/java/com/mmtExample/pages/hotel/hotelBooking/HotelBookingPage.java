@@ -24,13 +24,6 @@ public class HotelBookingPage extends BasePage implements IHotelBookingPage {
         click(CITY_LIST);
 
     }
-    // Select hotel from the dropdown
-    public void selectCityHotel(String city, String placeHolder) {
-        click(CITY_INPUT);
-        By city_text_box = By.xpath("//input[contains(@placeholder,'"+placeHolder+"')]");
-        inputText(city_text_box, city);
-
-    }
 
     //Select checkin date from checkin dropdoewn
     @Override
@@ -89,11 +82,6 @@ public class HotelBookingPage extends BasePage implements IHotelBookingPage {
         click(HOTEL_SEARCH);
         waitForPageLoad();
     }
-    public void clickOnMenu(By by){
-        click(by);
-        waitForPageLoad();
-    }
-
 
     public  String getCurrentCitySelected(){
         return getAttributeValue(CITY_INPUT, "value");

@@ -39,20 +39,8 @@ public class HotelListingPage extends BasePage implements IHotelListingPage{
 
     @Override
     public void selectHotel(String hotel, String checkinDate, String checkoutDate,int adults , List<Integer> ch ) {
-        try{
-            By hoTelToBook = By.xpath("//span[text() = '"+hotel+"']");
+         By hoTelToBook = By.xpath("//span[text() = '"+hotel+"']");
             click(hoTelToBook);
-        }catch(TimeoutException e){
-
-            HotelBookingPage hotelBookingPage = new HotelBookingPage();
-            hotelBookingPage.selectCityHotel(hotel, "City");
-            By by= By.xpath("//ul[@role=\"listbox\"]//li[1]");
-            hotelBookingPage.clickOnMenu(by);
-            By bodyPath = By.xpath("//html");
-            click(bodyPath);
-            hotelBookingPage.clickOnSearchHotel();
-            waitForPageLoad();
-        }
 
     }
 

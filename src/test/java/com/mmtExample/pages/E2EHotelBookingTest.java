@@ -28,7 +28,7 @@ public class E2EHotelBookingTest extends BaseTest {
     private static final Logger logger = LogManager.getLogger(E2EHotelBookingTest.class);
 
 
-    @Test(dataProvider = "hotelBookingData" , dataProviderClass = HotelBookingDataProvider.class)
+    @Test(dataProvider = "hotelBookingData" , dataProviderClass = HotelBookingDataProvider.class , priority = 1)
     public void e2eHotelBookingTest(HotelBookingBO hotelBookingBO , HotelBookingFilterBO hotelBookingFilterBO, ITestContext iTestContext) throws InterruptedException, ParseException {
         logger.info("Starting test for booking hotel");
         logger.debug("");
@@ -53,7 +53,7 @@ public class E2EHotelBookingTest extends BaseTest {
         String totalOccupants = hotelBookingBO.getAdultCount() + " Adults & " + hotelBookingBO.getChildren().size()+ " Child";
         sft.assertEquals(selectionInfoCenterData.get(0), totalOccupants);
         int totalRoomTariff = hotelDetailsPage.calculateTotalRoomPrice(roomCost);
-        sft.assertEquals(selectionInfoCenterData.get(1).replaceAll(",",""), "₹"+totalRoomTariff);
+        sft.assertEquals(selectionInfoCenterData.get(1).replaceAll(",","").substring(1), ""+totalRoomTariff,"Check for tariff failed");
         hotelDetailsPage.goToReviewPage();
         HotelReviewPage hotelReviewPage = new HotelReviewPage();
         TravellerBO travellerBO = createFakeTravellerData();
@@ -66,8 +66,8 @@ public class E2EHotelBookingTest extends BaseTest {
         sft.assertAll();
     }
 
-    @Test(dataProvider = "hotelBookingData" , dataProviderClass = HotelBookingDataProvider.class)
-    public void bookingTestFailedToCheckScreenShot(HotelBookingBO hotelBookingBO , HotelBookingFilterBO hotelBookingFilterBO, ITestContext iTestContext) throws InterruptedException, ParseException {
+    @Test(priority = 2)
+    public void bookingTestFailedToCheckScreenShot(ITestContext iTestContext) {
         logger.info("Starting test for booking hotel");
         logger.debug("");
         SoftAssert sft = new SoftAssert();
@@ -75,11 +75,8 @@ public class E2EHotelBookingTest extends BaseTest {
         homePage.setingItestContext(iTestContext);
         homePageOperations(homePage);
         HotelBookingPage hotelBookingPage = new HotelBookingPage();
-        enterHotelBookingDetails(hotelBookingPage,hotelBookingBO);
-        hotelBookingPage.clickOnSearchHotel();
-        HotelListingPage hotelListingPage = new HotelListingPage();
-        hotelBookingBO.setCity("random city for fail");
-        assertBookingDetails(hotelBookingPage,hotelBookingBO,sft);
+        sft.assertEquals(hotelBookingPage.getCurrentCitySelected(),"random");
+        sft.assertAll();
     }
 
     public void homePageOperations(HomePage homePage){
@@ -93,7 +90,7 @@ public class E2EHotelBookingTest extends BaseTest {
         logger.info("Asserting review page data");
         sft.assertEquals(hotelReviewPage.getCheckinDate(),DateUtils.changeDateFormat(hotelBookingBO.getCheckIn(),"dd-MM-yyyy" ,  "dd MMM yyyy"));
         sft.assertEquals(hotelReviewPage.getCheckOutDate(),DateUtils.changeDateFormat(hotelBookingBO.getCheckOut(),"dd-MM-yyyy" ,  "dd MMM yyyy"));
-        sft.assertEquals(hotelReviewPage.getTariffAmount().replaceAll(",","") , "₹ " +totalRoomTariff);
+        sft.assertEquals(hotelReviewPage.getTariffAmount().replaceAll(",","").substring(2),""+totalRoomTariff, "Asserting tariff on review Page");
         sft.assertEquals(hotelReviewPage.getTravellerCount(), hotelBookingBO.getAdultCount()
                 + " Adults, "+ hotelBookingBO.getChildren().size()+ " Child | " + hotelBookingFilterBO.getRoomOccupants().size() + " Rooms" );
         List<String> roomDetails = hotelReviewPage.getRoomDetails();
@@ -104,10 +101,10 @@ public class E2EHotelBookingTest extends BaseTest {
         logger.info("Asserting selection infor on review page");
         sft.assertEquals(hotelBookingFilterBO.getRoomType(), hotelDetailsFromSelectionInfo.get(0));
         sft.assertEquals(hotelBookingFilterBO.getRoomOccupants().get(0), hotelDetailsFromSelectionInfo.get(1));
-        sft.assertEquals(roomCost.get(0)+"Per Night", hotelDetailsFromSelectionInfo.get(2).replaceAll(",",""));
+        sft.assertEquals(roomCost.get(0)+"Per Night", hotelDetailsFromSelectionInfo.get(2).replaceAll(",",""),"Asserting per night cost room 1 in info");
         sft.assertEquals(hotelBookingFilterBO.getRoomType(), hotelDetailsFromSelectionInfo.get(3));
         sft.assertEquals(hotelBookingFilterBO.getRoomOccupants().get(1), hotelDetailsFromSelectionInfo.get(4));
-        sft.assertEquals(roomCost.get(1)+"Per Night", hotelDetailsFromSelectionInfo.get(5).replaceAll(",",""));
+        sft.assertEquals(roomCost.get(1)+"Per Night", hotelDetailsFromSelectionInfo.get(5).replaceAll(",",""),"Asserting per night cost room 2 in info");
     }
 
     public void assertBookingDetails(HotelBookingPage hotelBookingPage, HotelBookingBO hotelBookingBO , SoftAssert sft) throws ParseException {
@@ -150,9 +147,9 @@ public class E2EHotelBookingTest extends BaseTest {
         String[] email_phone = checkoutPage.getEmailPhone().split("\\|");
         sft.assertEquals(email_phone[0].trim(), travellerBO.getEmail());
         int calculateGst = GSTHelper.calculateGst(totalRoomTariff);
-        sft.assertEquals(checkoutPage.getTariff().replaceAll(",",""), String.valueOf(totalRoomTariff+10));
-        sft.assertEquals(checkoutPage.getGst().replaceAll(",",""), String.valueOf(calculateGst));
-        sft.assertEquals(checkoutPage.getTotalDue().replaceAll(",",""), String.valueOf(calculateGst+totalRoomTariff+10));
+        sft.assertEquals(checkoutPage.getTariff().replaceAll(",",""), String.valueOf(totalRoomTariff+10), "Asserting tariff on checkout page");
+        sft.assertEquals(checkoutPage.getGst().replaceAll(",",""), String.valueOf(calculateGst), "Asserting gst ckeckout page");
+        sft.assertEquals(checkoutPage.getTotalDue().replaceAll(",",""), String.valueOf(calculateGst+totalRoomTariff+10),"Asserting total due ckeckout page");
     }
 
     public TravellerBO createFakeTravellerData(){

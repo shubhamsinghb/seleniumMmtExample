@@ -1,0 +1,41 @@
+{
+  "6d2d3893cf381ce30577d660bca0820d" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "96086e01c44aa850",
+      "status" : "passed",
+      "time" : {
+        "start" : 1646002415593,
+        "stop" : 1646002440673,
+        "duration" : 25080
+      }
+    } ]
+  },
+  "9fdaeb36d4b6cd1ca62047ba7265251d" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "f037f47b343c68f",
+      "status" : "failed",
+      "statusDetails" : "The following asserts failed:\n\texpected [random] but found [Goa]",
+      "time" : {
+        "start" : 1646002444622,
+        "stop" : 1646002450421,
+        "duration" : 5799
+      }
+    } ]
+  }
+}
