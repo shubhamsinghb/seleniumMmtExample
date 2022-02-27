@@ -1,6 +1,7 @@
 package com.mmtExample.pages;
 
 import com.mmtExample.driverManager.DriverFactory;
+import com.mmtExample.file.readers.PropertyReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class BasePage {
@@ -67,7 +69,7 @@ public class BasePage {
     protected void waitForPageLoad(){
         JavascriptExecutor javascriptExecutor= (JavascriptExecutor) driver;
         boolean b = false;
-        while(!b){
+        while(!b && PropertyReader.getProperty("browser").equals("chrome")){
             b = javascriptExecutor.executeScript("return document.readyState").equals("complete");
         }
 
@@ -111,6 +113,10 @@ public class BasePage {
         }
         waitForPageLoad();
         return driver.getCurrentUrl();
+    }
+
+    protected void implicitlyWait(int time){
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(time));
     }
 
 
