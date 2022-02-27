@@ -1,3 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"failed","Mon Feb 28 04:24:04 IST 2022","Mon Feb 28 04:24:10 IST 2022","5799","testSuite","HotelTests","com.mmtExample.pages.E2EHotelBookingTest","com.mmtExample.pages.E2EHotelBookingTest","bookingTestFailedToCheckScreenShot","bookingTestFailedToCheckScreenShot",""
-"passed","Mon Feb 28 04:23:35 IST 2022","Mon Feb 28 04:24:00 IST 2022","25080","testSuite","HotelTests","com.mmtExample.pages.E2EHotelBookingTest","com.mmtExample.pages.E2EHotelBookingTest","e2eHotelBookingTest","e2eHotelBookingTest",""
